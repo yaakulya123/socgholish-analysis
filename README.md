@@ -85,18 +85,13 @@ JavaScript loaders cluster tightly at entropy 5.36 (IQR = 0.18), elevated above 
 socgholish-analysis/
 ├── analysis/
 │   ├── socgholish_analyzer.py          # Core analysis framework (70+ features per sample)
-│   ├── generate_advanced_figures.py    # Statistical figure generation
-│   ├── generate_visualizations.py      # Visualization pipeline
 │   ├── download_samples.py             # MalwareBazaar sample collector
 │   └── download_all_socgholish.py      # Bulk SocGholish/FakeUpdates downloader
 ├── figures/                            # All figures as used in the paper (PNG)
-├── results/
-│   ├── analysis_results.csv            # Per-sample feature matrix (160 rows x 70+ columns)
-│   ├── analysis_results.json           # Full results in JSON format
-│   └── analysis_summary.json           # Aggregate statistics
-└── paper/
-    ├── main.tex                        # LaTeX source (Springer sn-jnl format)
-    └── sn-bibliography.bib             # Bibliography
+└── results/
+    ├── analysis_results.csv            # Per-sample feature matrix (160 rows x 70+ columns)
+    ├── analysis_results.json           # Full results in JSON format
+    └── analysis_summary.json           # Aggregate statistics
 ```
 
 ## Feature Extraction
@@ -144,13 +139,6 @@ pip install pefile python-magic requests tqdm pandas matplotlib seaborn scipy
 
 ```bash
 python analysis/socgholish_analyzer.py --input /path/to/samples --output results/
-```
-
-### Reproduce figures from existing results
-
-```bash
-python analysis/generate_advanced_figures.py --results results/analysis_results.csv --output figures/
-python analysis/generate_visualizations.py --results results/analysis_results.csv --output figures/
 ```
 
 ### Collect samples from MalwareBazaar
