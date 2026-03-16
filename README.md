@@ -8,11 +8,7 @@ A systematic static analysis of 160 confirmed SocGholish malware samples collect
 
 SocGholish is a malware distribution framework active since at least 2018. It compromises legitimate websites and serves fake browser update prompts to deliver malicious payloads. Despite its operational longevity, peer-reviewed static analysis of this family is sparse — most available analysis comes from vendor threat reports covering individual campaigns.
 
-This project provides:
-- A Python-based static analysis framework extracting 70+ features per sample
-- Per-sample results for 160 confirmed malicious files across four file types
-- Reproducible entropy profiling, obfuscation detection, and network artifact extraction
-- Figures generated directly from extracted data, as used in the paper
+This project provides a Python-based static analysis framework extracting 70+ features per sample, per-sample results for 160 confirmed malicious files across four file types, and reproducible entropy profiling, obfuscation detection, and network artifact extraction.
 
 ---
 
@@ -26,9 +22,7 @@ This project provides:
 | HTML Lure Page | 1     | 0.6%   |
 | **Total**      | **160** | —    |
 
-Samples sourced from [MalwareBazaar](https://bazaar.abuse.ch) using the `SocGholish` and `FakeUpdates` tags. Collection window: June 2021 – March 2026.
-
-SHA-256 hashes for all 160 samples are included in `results/analysis_results.csv` (column: `sha256`). Samples themselves are not distributed — download via MalwareBazaar using the provided hashes.
+Samples sourced from [MalwareBazaar](https://bazaar.abuse.ch) using the `SocGholish` and `FakeUpdates` tags. Collection window: June 2021 – March 2026. SHA-256 hashes for all 160 samples are in `results/analysis_results.csv`. Samples are not distributed — retrieve via MalwareBazaar using the provided hashes.
 
 ---
 
@@ -36,8 +30,8 @@ SHA-256 hashes for all 160 samples are included in `results/analysis_results.csv
 
 | Metric | Value |
 |--------|-------|
-| Mean entropy (JavaScript) | 5.36 (SD = 0.18) |
-| Mean entropy (PE) | 6.99 (SD = 0.91) |
+| Mean entropy — JavaScript | 5.36 (SD = 0.18) |
+| Mean entropy — PE Executable | 6.99 (SD = 0.91) |
 | PE entropy range | 4.78 – 8.0 |
 | Samples with embedded network indicators | 87 (54.4%) |
 | Classified suspicious or malicious | 18 (11.3%) |
@@ -50,59 +44,48 @@ JavaScript loaders cluster tightly at entropy 5.36 (IQR = 0.18) — elevated abo
 
 ## Figures
 
-### Attack Chain
-![Attack Chain](figures/fig_attack_chain.png)
-
-### Framework Architecture
-![Framework Architecture](figures/fig_framework_architecture.png)
-
-### File Type Distribution
-![File Type Distribution](figures/fig_file_type_distribution.png)
-
-### Entropy Distribution by File Type
-![Entropy Distribution](figures/fig_entropy_distribution.png)
-
-### Entropy KDE — JavaScript vs PE
-![Entropy KDE](figures/fig_entropy_kde.png)
-
-### Entropy vs File Size
-![Size vs Entropy](figures/fig_size_vs_entropy.png)
-
-### File Size Distribution
-![Size Analysis](figures/fig_size_analysis.png)
-
-### Obfuscation Technique Breakdown
-![Obfuscation Breakdown](figures/fig_obfuscation_breakdown.png)
-
-### Network Indicator Distribution
-![Network Bubble](figures/fig_network_bubble.png)
-
-### URL Distribution
-![URL Distribution](figures/fig_url_distribution.png)
-
-### Classification Flow
-![Classification Flow](figures/fig_classification_flow.png)
-
-### Classification Summary
-![Classification Summary](figures/fig_classification_summary.png)
-
-### Confidence Score Distribution
-![Confidence Scores](figures/fig_confidence_scores.png)
-
-### Detection Heatmap
-![Detection Heatmap](figures/fig_detection_heatmap.png)
-
-### Violin Comparison (JavaScript vs PE)
-![Violin Comparison](figures/fig_violin_comparison.png)
-
-### Feature Correlation Heatmap
-![Correlation Heatmap](figures/fig_correlation_heatmap.png)
-
-### Scatter Matrix
-![Scatter Matrix](figures/fig_scatter_matrix.png)
-
-### Radar Comparison
-![Radar Comparison](figures/fig_radar_comparison.png)
+<table>
+<tr>
+<td align="center" width="50%">
+<img src="figures/fig_framework_architecture.png" width="100%"/><br>
+<em>Analysis Framework Architecture</em>
+</td>
+<td align="center" width="50%">
+<img src="figures/fig_attack_chain.png" width="100%"/><br>
+<em>SocGholish Attack Chain</em>
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+<img src="figures/fig_entropy_distribution.png" width="100%"/><br>
+<em>Entropy Distribution by File Type</em>
+</td>
+<td align="center" width="50%">
+<img src="figures/fig_size_analysis.png" width="100%"/><br>
+<em>File Size Distribution</em>
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+<img src="figures/fig_obfuscation_breakdown.png" width="100%"/><br>
+<em>Obfuscation Technique Breakdown</em>
+</td>
+<td align="center" width="50%">
+<img src="figures/fig_violin_comparison.png" width="100%"/><br>
+<em>Entropy Violin — JavaScript vs PE</em>
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+<img src="figures/fig_correlation_heatmap.png" width="100%"/><br>
+<em>Feature Correlation Heatmap</em>
+</td>
+<td align="center" width="50%">
+<img src="figures/fig_scatter_matrix.png" width="100%"/><br>
+<em>Feature Scatter Matrix</em>
+</td>
+</tr>
+</table>
 
 ---
 
@@ -130,45 +113,36 @@ socgholish-analysis/
 
 ## Feature Extraction
 
-The core analyzer (`analysis/socgholish_analyzer.py`) extracts the following feature categories per sample:
+The core analyzer (`analysis/socgholish_analyzer.py`) extracts 70+ features per sample across six categories:
 
-**Entropy features**
-- Shannon entropy (byte-level)
-- Per-section entropy (PE files)
-- Average section entropy
-- Entropy ratio (normalized)
-
-**Obfuscation indicators**
-- base64 string detection
-- `eval()` usage count
-- `fromCharCode` usage
-- Unicode escape sequences
-- Hex string encoding
-- String concatenation patterns
-
-**Network artifacts**
-- Embedded URLs (regex extraction)
-- IP address strings
-- Domain names
-- C2-pattern matching
-
-**Behavioral patterns**
-- API call classification (process, file, registry, network, persistence, crypto)
-- PowerShell cmdlet detection
-- WMI usage indicators
-- Scheduled task references
-- Download cradle patterns
-
-**File metadata**
-- File size (bytes and character count for scripts)
-- File type classification
-- MD5, SHA1, SHA256 hashes
-- Modification timestamp
-
-**Classification output**
-- Confidence score (0.0 – 1.0)
-- Suspicious threshold: 0.3
-- Malicious threshold: 0.7
+| Category | Feature | Description |
+|----------|---------|-------------|
+| **Entropy** | Shannon entropy | Byte-level entropy of the full file |
+| **Entropy** | Per-section entropy | Entropy per PE section (.text, .data, .rdata, etc.) |
+| **Entropy** | Average section entropy | Mean across all sections |
+| **Entropy** | Entropy ratio | Normalized entropy (entropy / log2(256)) |
+| **Obfuscation** | base64 strings | Count of base64-encoded string literals |
+| **Obfuscation** | eval() count | Number of eval() invocations |
+| **Obfuscation** | fromCharCode | Usage of String.fromCharCode encoding |
+| **Obfuscation** | Unicode escapes | Count of \uXXXX escape sequences |
+| **Obfuscation** | Hex strings | Hex-encoded string literals |
+| **Obfuscation** | String concatenation | Fragmented string assembly patterns |
+| **Network** | Embedded URLs | Regex-extracted URL strings |
+| **Network** | IP addresses | IPv4 address strings |
+| **Network** | Domain names | Extracted domain references |
+| **Network** | C2 patterns | Known C2 URL structure matching |
+| **Behavioral** | API calls | Classified by type: process, file, registry, network, persistence, crypto |
+| **Behavioral** | PowerShell cmdlets | Detected cmdlet invocations |
+| **Behavioral** | WMI usage | Windows Management Instrumentation indicators |
+| **Behavioral** | Scheduled tasks | Task registration references |
+| **Behavioral** | Download cradles | PowerShell/JS download-and-execute patterns |
+| **Metadata** | File size | Byte count (and character count for scripts) |
+| **Metadata** | File type | javascript / PE_executable / powershell / html_document |
+| **Metadata** | Hashes | MD5, SHA1, SHA256 |
+| **Metadata** | Modification timestamp | File last-modified datetime |
+| **Classification** | Confidence score | Weighted heuristic score (0.0 – 1.0) |
+| **Classification** | Suspicious threshold | Score >= 0.3 |
+| **Classification** | Malicious threshold | Score >= 0.7 |
 
 ---
 
@@ -199,7 +173,7 @@ python analysis/generate_visualizations.py --results results/analysis_results.cs
 python analysis/download_all_socgholish.py --tag SocGholish --output samples/
 ```
 
-Requires a MalwareBazaar API key. Set via environment variable:
+Requires a MalwareBazaar API key set as an environment variable:
 ```bash
 export MALBAZAAR_API_KEY=your_key_here
 ```
@@ -217,7 +191,7 @@ export MALBAZAAR_API_KEY=your_key_here
 | `entropy` | Shannon entropy of the full file |
 | `obfuscation_indicators_count` | Number of obfuscation technique hits |
 | `urls_count` | Number of embedded URL strings |
-| `confidence_score` | Classification confidence (0–1) |
+| `confidence_score` | Classification confidence (0 – 1) |
 | `classification` | benign / suspicious / malicious |
 | `is_likely_malware` | Boolean flag from heuristic engine |
 | `ml_features` | JSON blob of all numeric features used in classification |
@@ -226,15 +200,13 @@ export MALBAZAAR_API_KEY=your_key_here
 
 ## Ethical Note
 
-All samples analyzed here are publicly available through MalwareBazaar. No samples are distributed in this repository. SHA-256 hashes are provided for reproducibility; researchers can retrieve samples independently through MalwareBazaar's API with an approved account.
-
-This work is conducted for defensive research purposes: understanding SocGholish's static characteristics supports detection engineering and threat intelligence.
+All samples analyzed here are publicly available through MalwareBazaar. No samples are distributed in this repository. SHA-256 hashes are provided for reproducibility; researchers can retrieve samples independently through MalwareBazaar's API with an approved account. This work is conducted for defensive research purposes.
 
 ---
 
 ## Citation
 
-If you use this framework or dataset in your research, please cite the accompanying paper (citation details will be added upon publication).
+Citation details will be added upon publication.
 
 ---
 
