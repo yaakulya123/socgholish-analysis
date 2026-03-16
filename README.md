@@ -2,15 +2,11 @@
 
 A systematic static analysis of 160 confirmed SocGholish malware samples collected from MalwareBazaar. This repository accompanies the research paper *"Static Analysis of SocGholish: Entropy Profiling, Obfuscation Detection, and Evasion Characterization"* submitted to Springer Journal of Computer Virology and Hacking Techniques.
 
----
-
 ## Overview
 
-SocGholish is a malware distribution framework active since at least 2018. It compromises legitimate websites and serves fake browser update prompts to deliver malicious payloads. Despite its operational longevity, peer-reviewed static analysis of this family is sparse — most available analysis comes from vendor threat reports covering individual campaigns.
+SocGholish is a malware distribution framework active since at least 2018. It compromises legitimate websites and serves fake browser update prompts to deliver malicious payloads. Despite its operational longevity, peer-reviewed static analysis of this family is sparse, and most available analysis comes from vendor threat reports covering individual campaigns.
 
 This project provides a Python-based static analysis framework extracting 70+ features per sample, per-sample results for 160 confirmed malicious files across four file types, and reproducible entropy profiling, obfuscation detection, and network artifact extraction.
-
----
 
 ## Dataset
 
@@ -20,27 +16,23 @@ This project provides a Python-based static analysis framework extracting 70+ fe
 | PE Executable  | 26    | 16.3%  |
 | PowerShell     | 1     | 0.6%   |
 | HTML Lure Page | 1     | 0.6%   |
-| **Total**      | **160** | —    |
+| **Total**      | **160** | 100% |
 
-Samples sourced from [MalwareBazaar](https://bazaar.abuse.ch) using the `SocGholish` and `FakeUpdates` tags. Collection window: June 2021 – March 2026. SHA-256 hashes for all 160 samples are in `results/analysis_results.csv`. Samples are not distributed — retrieve via MalwareBazaar using the provided hashes.
-
----
+Samples sourced from [MalwareBazaar](https://bazaar.abuse.ch) using the `SocGholish` and `FakeUpdates` tags. Collection window: June 2021 to March 2026. SHA-256 hashes for all 160 samples are in `results/analysis_results.csv`. Samples are not distributed; retrieve them via MalwareBazaar using the provided hashes.
 
 ## Key Findings
 
 | Metric | Value |
 |--------|-------|
-| Mean entropy — JavaScript | 5.36 (SD = 0.18) |
-| Mean entropy — PE Executable | 6.99 (SD = 0.91) |
-| PE entropy range | 4.78 – 8.0 |
+| Mean entropy (JavaScript) | 5.36 (SD = 0.18) |
+| Mean entropy (PE Executable) | 6.99 (SD = 0.91) |
+| PE entropy range | 4.78 to 8.0 |
 | Samples with embedded network indicators | 87 (54.4%) |
 | Classified suspicious or malicious | 18 (11.3%) |
 | Mean obfuscation indicators (JavaScript) | 1.23 |
 | Mean confidence score (overall) | 0.104 |
 
-JavaScript loaders cluster tightly at entropy 5.36 (IQR = 0.18) — elevated above unobfuscated code but below packing thresholds. This is a deliberate operational target, not noise. PE payloads reach entropy values up to 8.0, consistent with aggressive packing. The 11.3% detection rate on confirmed malware reflects SocGholish's evasion design, not a limitation of the methodology.
-
----
+JavaScript loaders cluster tightly at entropy 5.36 (IQR = 0.18), elevated above unobfuscated code but below packing thresholds. This is a deliberate operational target, not noise. PE payloads reach entropy values up to 8.0, consistent with aggressive packing. The 11.3% detection rate on confirmed malware reflects SocGholish's evasion design, not a limitation of the methodology.
 
 ## Figures
 
@@ -72,7 +64,7 @@ JavaScript loaders cluster tightly at entropy 5.36 (IQR = 0.18) — elevated abo
 </td>
 <td align="center" width="50%">
 <img src="figures/fig_violin_comparison.png" width="100%"/><br>
-<em>Entropy Violin — JavaScript vs PE</em>
+<em>Entropy Violin: JavaScript vs PE</em>
 </td>
 </tr>
 <tr>
@@ -87,8 +79,6 @@ JavaScript loaders cluster tightly at entropy 5.36 (IQR = 0.18) — elevated abo
 </tr>
 </table>
 
----
-
 ## Repository Structure
 
 ```
@@ -101,15 +91,13 @@ socgholish-analysis/
 │   └── download_all_socgholish.py      # Bulk SocGholish/FakeUpdates downloader
 ├── figures/                            # All figures as used in the paper (PNG)
 ├── results/
-│   ├── analysis_results.csv            # Per-sample feature matrix (160 rows × 70+ columns)
+│   ├── analysis_results.csv            # Per-sample feature matrix (160 rows x 70+ columns)
 │   ├── analysis_results.json           # Full results in JSON format
 │   └── analysis_summary.json           # Aggregate statistics
 └── paper/
     ├── main.tex                        # LaTeX source (Springer sn-jnl format)
     └── sn-bibliography.bib             # Bibliography
 ```
-
----
 
 ## Feature Extraction
 
@@ -140,11 +128,9 @@ The core analyzer (`analysis/socgholish_analyzer.py`) extracts 70+ features per 
 | **Metadata** | File type | javascript / PE_executable / powershell / html_document |
 | **Metadata** | Hashes | MD5, SHA1, SHA256 |
 | **Metadata** | Modification timestamp | File last-modified datetime |
-| **Classification** | Confidence score | Weighted heuristic score (0.0 – 1.0) |
+| **Classification** | Confidence score | Weighted heuristic score (0.0 to 1.0) |
 | **Classification** | Suspicious threshold | Score >= 0.3 |
 | **Classification** | Malicious threshold | Score >= 0.7 |
-
----
 
 ## Usage
 
@@ -178,8 +164,6 @@ Requires a MalwareBazaar API key set as an environment variable:
 export MALBAZAAR_API_KEY=your_key_here
 ```
 
----
-
 ## Results Data
 
 `results/analysis_results.csv` contains one row per sample with 70+ columns including:
@@ -191,24 +175,18 @@ export MALBAZAAR_API_KEY=your_key_here
 | `entropy` | Shannon entropy of the full file |
 | `obfuscation_indicators_count` | Number of obfuscation technique hits |
 | `urls_count` | Number of embedded URL strings |
-| `confidence_score` | Classification confidence (0 – 1) |
+| `confidence_score` | Classification confidence (0 to 1) |
 | `classification` | benign / suspicious / malicious |
 | `is_likely_malware` | Boolean flag from heuristic engine |
 | `ml_features` | JSON blob of all numeric features used in classification |
-
----
 
 ## Ethical Note
 
 All samples analyzed here are publicly available through MalwareBazaar. No samples are distributed in this repository. SHA-256 hashes are provided for reproducibility; researchers can retrieve samples independently through MalwareBazaar's API with an approved account. This work is conducted for defensive research purposes.
 
----
-
 ## Citation
 
 Citation details will be added upon publication.
-
----
 
 ## License
 
