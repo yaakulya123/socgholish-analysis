@@ -1,0 +1,27 @@
+{
+  "total_samples": 160,
+  "file_types": {
+    "javascript": 132,
+    "PE_executable": 26,
+    "powershell": 1,
+    "html_document": 1
+  },
+  "classifications": {
+    "benign": 142,
+    "suspicious": 17,
+    "malicious": 1
+  },
+  "average_entropy": 5.625,
+  "entropy_range": {
+    "min": 4.781,
+    "max": 8.0
+  },
+  "average_confidence_score": 0.104,
+  "average_obfuscation_indicators": 1.05,
+  "average_urls_detected": 11.44,
+  "average_script_commands": 0.22,
+  "malicious_count": 1,
+  "suspicious_count": 17,
+  "benign_count": 142,
+  "samples_with_network_activity": 87
+}
