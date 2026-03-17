@@ -1,6 +1,6 @@
 # SocGholish Static Analysis Framework
 
-A systematic static analysis of 160 confirmed SocGholish malware samples collected from MalwareBazaar. This repository accompanies the research paper *"Static Analysis of SocGholish: Entropy Profiling, Obfuscation Detection, and Evasion Characterization"* submitted to Springer Journal of Computer Virology and Hacking Techniques.
+A systematic static analysis of 160 confirmed SocGholish malware samples collected from MalwareBazaar. This repository accompanies the research paper *"Static Analysis of SocGholish: Entropy Profiling, Obfuscation Detection, and Evasion Characterization"*.
 
 ## Overview
 
